@@ -80,34 +80,33 @@
 
 //For Driver Control height buttons
 //TO DO: Find actual low and high goal values
-//NOTE: I assume these values aren't to scale (not in m, cm, inches, etc.)
-const int HEIGHTS = 2;
-const int LOW_GOAL_HEIGHT = 50
-const int HIGH_GOAL_HEIGHT = 75
-const int heights[NUM_HEIGHTS] = {LOW_GOAL_HEIGHT, HIGH_GOAL_HEIGHT};
+//NOTE: These values aren't in m, cm, inches, etc.)
+const int STARTING_HEIGHT = 0;
+const int LOW_GOAL_HEIGHT = 53;   //low goal is 69% of high goal more or less
+const int HIGH_GOAL_HEIGHT = 75;
 
+//Better button names
 ControllerButton RightBumperUP(E_CONTROLLER_DIGITAL_R1);
 ControllerButton RightBumperDOWN(E_CONTROLLER_DIGITAL_R2);
-// for reference
-//auto liftController = AsyncControllerFactory::posPID(
-//	{LIFT_MOTOR_RIGHT, LIFT_MOTOR_LEFT},
-//	liftkP, liftkI, liftkD
+ControllerButton LeftBumperDOWN(E_CONTROLLER_DIGITAL_L2);
 
 ///////////////////////////////OPCONTROL///////////////////////////////
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	//pros::Motor left_mtr(1);
-	//pros::Motor right_mtr(2);
-	//while (true) {
-		//pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 //(pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 //(pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-		//int left = master.get_analog(ANALOG_LEFT_Y);
-		//int right = master.get_analog(ANALOG_RIGHT_Y);
 
-		//left_mtr = left;
-		//right_mtr = right;
-		pros::delay(20);
+   while (true) {
+     if (LeftBumperDOWN.changedToPressed())             //If button is pressed, set to height
+		 {
+       liftControl.setTarget(STARTING_HEIGHT);
+     }
+		 else if (RightBumperUP.changedToPressed())
+		 {
+       liftControl.setTarget(LOW_GOAL_HEIGHT);
+     }
+		else if (RightBumperDOWN.changedToPressed())
+		{
+			 liftControl.setTarget(HIGH_GOAL_HEIGHT);
+		 }
 
-	}
+		 pros::delay(20)
 }
