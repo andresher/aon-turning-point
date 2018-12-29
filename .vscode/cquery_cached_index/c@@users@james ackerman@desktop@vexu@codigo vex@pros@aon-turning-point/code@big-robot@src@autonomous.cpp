@@ -18,14 +18,14 @@ using namespace okapi;
 // Chassis definition
 // Assume this is correct for now
 // TODO: Update with the real robot values
-const int DRIVE_MOTOR_LEFT_1 = 1;
+const int DRIVE_MOTOR_LEFT_1 = 1;   //1,2,3 = Front, Middle, Back
 const int DRIVE_MOTOR_LEFT_2 = 2;
 const int DRIVE_MOTOR_LEFT_3 = 3;
 const int DRIVE_MOTOR_RIGHT_1 = 4;
 const int DRIVE_MOTOR_RIGHT_2 = 5;
 const int DRIVE_MOTOR_RIGHT_3 = 6;
 const auto WHEEL_DIAMETER = 4_in;
-const auto CHASSIS_WIDTH = 13.5_in;
+const auto CHASSIS_WIDTH = 15.23_in;
 
 // Lift definition
 // Assume this is correct for now
@@ -33,14 +33,14 @@ const auto CHASSIS_WIDTH = 13.5_in;
 const double liftkP = 1.0;
 const double liftkI = 0.001;
 const double liftkD = 0.1;
-const int LIFT_MOTOR_RIGTH = 7;
+const int LIFT_MOTOR_RIGHT = 7;
 const int LIFT_MOTOR_LEFT = 8;
 
 // Intake definition
 // Assume this is correct for now
 // TODO: Update with the real robot values
-const int INTAKE_MOTOR_RIGTH_1 = 9;
-const int INTAKE_MOTOR_RIGTH_2 = 10;
+const int INTAKE_MOTOR_RIGHT_1 = 9;    // 1 for side roller
+const int INTAKE_MOTOR_RIGHT_2 = 10;   // 2 for rotator
 const int INTAKE_MOTOR_LEFT_1 = 11;
 const int INTAKE_MOTOR_LEFT_2 = 12;
 
@@ -63,12 +63,12 @@ auto driveController = ChassisControllerFactory::create(
   {WHEEL_DIAMETER, CHASSIS_WIDTH}
 );
 auto liftController = AsyncControllerFactory::posPID(
-  {LIFT_MOTOR_RIGTH, LIFT_MOTOR_LEFT},
+  {LIFT_MOTOR_RIGHT, LIFT_MOTOR_LEFT},
   liftkP, liftkI, liftkD
 );
 auto intakeController = AsyncControllerFactory::velIntegrated(
-  {INTAKE_MOTOR_RIGTH_1,
-  INTAKE_MOTOR_RIGTH_2,
+  {INTAKE_MOTOR_RIGHT_1,
+  INTAKE_MOTOR_RIGHT_2,
   INTAKE_MOTOR_LEFT_1,
   INTAKE_MOTOR_LEFT_2}
 );
