@@ -90,11 +90,21 @@ ControllerButton RightBumperUP(E_CONTROLLER_DIGITAL_R1);
 ControllerButton RightBumperDOWN(E_CONTROLLER_DIGITAL_R2);
 ControllerButton LeftBumperDOWN(E_CONTROLLER_DIGITAL_L2);
 
-///////////////////////////////OPCONTROL///////////////////////////////
+////////////////////////////////////OPCONTROL///////////////////////////////////
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-   while (true) {
+Controller controller; //Can I just use Controller.getAnalog() instead of having to use Controller controller??
+
+  while (true)
+	{
+		 //////////////////////////////CHASSIS(DRIVE)///////////////////////////////
+	 	 //Arcade drive FW-BW on Left Y axis turns on Right X
+		 drive.arcade(controller.getAnalog(E_CONTROLLER_ANALOG_LEFT_Y), controller.getAnalog(E_CONTROLLER_ANALOG_RIGHT_X));
+		 ////////////////////////////////INTAKE/////////////////////////////////////
+		 
+
+		 /////////////////////////////////LIFT//////////////////////////////////////
      if (LeftBumperDOWN.changedToPressed())             //If button is pressed, set to height
 		 {
        liftControl.setTarget(STARTING_HEIGHT);
@@ -109,4 +119,5 @@ void opcontrol() {
 		 }
 
 		 pros::delay(20)
+	 }
 }
