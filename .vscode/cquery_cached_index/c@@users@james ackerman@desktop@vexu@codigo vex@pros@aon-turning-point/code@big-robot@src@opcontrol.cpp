@@ -8,14 +8,16 @@
  // Chassis definition
  // Assume this is correct for now
  // TODO: Update with the real robot values
- const int DRIVE_MOTOR_LEFT_1 = 1;   //FMB = Front, Middle, Back
+ const int DRIVE_MOTOR_LEFT_1 = 1;   //1,2,3 = Front, Middle, Back
  const int DRIVE_MOTOR_LEFT_2 = 2;
  const int DRIVE_MOTOR_LEFT_3 = 3;
- const int DRIVE_MOTOR_RIGHT_1 = 4;
+ const int DRIVE_MOTOR_RIGHT_1 = 4;  //1,2,3 = Front, Middle, Back
  const int DRIVE_MOTOR_RIGHT_2 = 5;
  const int DRIVE_MOTOR_RIGHT_3 = 6;
+ const int DRIVE_PNEUMATIC = 1;     //port A //change to A if this doesn't work
  const auto WHEEL_DIAMETER = 4_in;
  const auto CHASSIS_WIDTH = 15.24_in;
+
 
  // Lift definition
  // Assume this is correct for now
@@ -84,8 +86,9 @@ ControllerButton ButtonX(E_CONTROLLER_DIGITAL_X);
 ControllerButton ButtonY(E_CONTROLLER_DIGITAL_Y);
 ControllerButton ButtonDOWN(E_CONTROLLER_DIGITAL_DOWN);
 ControllerButton ButtonLEFT(E_CONTROLLER_DIGITAL_LEFT);
+ControllerButton ButtonRIGHT(E_CONTROLLER_DIGITAL_RIGHT);
 
-////////////////////////////////////OPCONTROL///////////////////////////////////
+////////////////////////////////////OPCONTROL///////////////////////////////////////////////////
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
   Controller controller;
@@ -93,17 +96,27 @@ void opcontrol() {
 	//use Controller controller to do controller.getAnalog()?       >    see drive.arcade() line
 	//Or do I just use master.getAnalog()??                        >       ^
 
+  //use _mtr syntax if the following doesnt work
+  //example: Motor intaker = INTAKE_MOTOR_LEFT_rmtr
   Motor intakeL(INTAKE_MOTOR_LEFT);        //motor on INTAKE_MOTOR_LEFT port
   Motor intakeR(INTAKE_MOTOR_RIGHT, true); //motor on INTAKE_MOTOR_RIGHT port reversed driection
   Motor conveyor(CONVEYOR_MOTOR);          //motor on CONVEYOR_MOTOR port
   Motor puncher1(PUNCHER_MOTOR_1);         //motor on PUNCHER_MOTOR_1 port
   Motor puncher2(PUNCHER_MOTOR_2, true);   //motor on PUNCHER_MOTOR_2 port
-  int CURRENT_HEIGHT = 0;
+  int CURRENT_HEIGHT = 0;                  //For Lift
+  bool state = LOW;                        //For Pneumatics //Change to false if this doesn't not work
+  pros::ADIDigitalOut piston (DRIVE_PNEUMATIC); //piston on DRIVE_PNEUMATIC port
   while (true)
 	{
 		 //////////////////////////////CHASSIS(DRIVE)///////////////////////////////
 	 	 //Arcade drive FW-BW on Left Y axis turns on Right X
 		 drive.arcade(controller.getAnalog(E_CONTROLLER_ANALOG_LEFT_Y), controller.getAnalog(E_CONTROLLER_ANALOG_RIGHT_X));
+     //////////////////////////////TRANSMISSION/////////////////////////////////
+     if (ButtonRIGHT.changedToPressed())
+     {
+         state != state;
+         sensor.set_value(state);
+     }
      /////////////////////////////////INTAKE////////////////////////////////////
      //using straight up move commands instead of okapilib
      //how to use target for okapilib velPID? rpm? 0-100? 0-127?
@@ -112,12 +125,12 @@ void opcontrol() {
          IntakeL.move_voltage(127);
          IntakeR.move_voltage(127);
      }
-     else if (RightBumperDOWN.isPressed())   //Hold button to Bota Intake
+     else if (RightBumperDOWN.isPressed())  //Hold button to Bota Intake
      {
          intakeL.move_voltage(-127);
          IntakeR.move_voltage(-127);
      }
-     else                                    //Intake stops if nothing is pressed
+     else                                   //Intake stops if nothing is pressed
      {
          intakeL.move_voltage(0);
          IntakeR.move_voltage(0);
@@ -154,7 +167,7 @@ void opcontrol() {
          puncher2.move_voltage(0);
      }
 		 /////////////////////////////////LIFT//////////////////////////////////////
-     if (ButtonA.changedToPressed())         //Press button to go to raise lift to height
+     if (ButtonA.changedToPressed())      //Press button to go to raise lift to height
 		 {
        liftController.setTarget(STARTING_HEIGHT-CURRENT_HEIGHT);
        CURRENT_HEIGHT = STARTING_HEIGHT;
