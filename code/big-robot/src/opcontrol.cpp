@@ -1,20 +1,9 @@
 #include "main.h"
 #include "okapi/api.hpp"
-/**
- * Runs the operator control code. This function will be started in its own task
- * with the default priority and stack size whenever the robot is enabled via
- * the Field Management System or the VEX Competition Switch in the operator
- * control mode.
- *
- * If no competition control is connected, this function will run immediately
- * following initialize().
- *
- * If the robot is disabled or communications is lost, the
- * operator control task will be stopped. Re-enabling the robot will restart the
- * task, not resume it from where it left off.
- */
 
  using namespace okapi;
+
+
 
  // Chassis definition
  // Assume this is correct for now
@@ -94,6 +83,7 @@ ControllerButton ButtonB(E_CONTROLLER_DIGITAL_B);
 ControllerButton ButtonX(E_CONTROLLER_DIGITAL_X);
 ControllerButton ButtonY(E_CONTROLLER_DIGITAL_Y);
 ControllerButton ButtonDOWN(E_CONTROLLER_DIGITAL_DOWN);
+ControllerButton ButtonLEFT(E_CONTROLLER_DIGITAL_LEFT);
 
 ////////////////////////////////////OPCONTROL///////////////////////////////////
 void opcontrol() {
@@ -105,6 +95,9 @@ void opcontrol() {
 
   Motor intakeL(INTAKE_MOTOR_LEFT);        //motor on INTAKE_MOTOR_LEFT port
   Motor intakeR(INTAKE_MOTOR_RIGHT, true); //motor on INTAKE_MOTOR_RIGHT port reversed driection
+  Motor conveyor(CONVEYOR_MOTOR);          //motor on CONVEYOR_MOTOR port
+  Motor puncher1(PUNCHER_MOTOR_1);         //motor on PUNCHER_MOTOR_1 port
+  Motor puncher2(PUNCHER_MOTOR_2, true);   //motor on PUNCHER_MOTOR_2 port
   int CURRENT_HEIGHT = 0;
   while (true)
 	{
@@ -114,46 +107,54 @@ void opcontrol() {
      /////////////////////////////////INTAKE////////////////////////////////////
      //using straight up move commands instead of okapilib
      //how to use target for okapilib velPID? rpm? 0-100? 0-127?
-     if (RightBumperUP.isPressed())       //Chupa Intake
+     if (RightBumperUP.isPressed())          //Hold button to Chupa Intake
      {
          IntakeL.move_voltage(127);
          IntakeR.move_voltage(127);
      }
-     else if (RightBumperDOWN.isPressed())    //Bota Intake
+     else if (RightBumperDOWN.isPressed())   //Hold button to Bota Intake
      {
          intakeL.move_voltage(-127);
          IntakeR.move_voltage(-127);
      }
-     else                                 //Stop Intake
+     else                                    //Intake stops if nothing is pressed
      {
          intakeL.move_voltage(0);
          IntakeR.move_voltage(0);
      }
-     /////////////////////////////////ROLLER////////////////////////////////////
+     ///////////////////////////////CONVEYOR////////////////////////////////////
      //using straight up move commands instead of okapilib
      //how to use target for okapilib velPID? rpm? 0-100? 0-127?
      if (LeftBumperUP.isPressed())
      {
-         IntakeL.move_voltage(127);
-         IntakeR.move_voltage(127);
+         conveyor.move_voltage(127);
      }
      else if (LeftBumperUP.isPressed())
      {
-         intakeL.move_voltage(-127);
-         IntakeR.move_voltage(-127);
+         conveyor.move_voltage(-127);
      }
      else
      {
-         intakeL.move_voltage(0);
-         IntakeR.move_voltage(0);
+         conveyor.move_voltage(0);
      }
 		 /////////////////////////////INTAKE ROTATOR////////////////////////////////
-		 if (ButtonDOWN.changedToPressed())      //If button is pressed, flip intake
+		 if (ButtonDOWN.changedToPressed())      //Press button to flip intake
 		 {
 			 rotatorController.setTarget(180);
 		 }
+     ////////////////////////////////PUNCHER////////////////////////////////////
+     if (ButtonLEFT.isPressed())             //Hold Button to fire puncher
+     {
+         puncher1.move_voltage(127);
+         puncher2.move_voltage(127);
+     }
+     else
+     {
+         puncher1.move_voltage(0);
+         puncher2.move_voltage(0);
+     }
 		 /////////////////////////////////LIFT//////////////////////////////////////
-     if (ButtonA.changedToPressed())         //If button is pressed, set to height
+     if (ButtonA.changedToPressed())         //Press button to go to raise lift to height
 		 {
        liftController.setTarget(STARTING_HEIGHT-CURRENT_HEIGHT);
        CURRENT_HEIGHT = STARTING_HEIGHT;
