@@ -40,10 +40,10 @@
  // Intake definition
  // Assume this is correct for now
  // TODO: Update with the real robot values
- const int INTAKE_MOTOR_RIGHT_1 = 9;    // 1 for side roller
- const int INTAKE_MOTOR_RIGHT_2 = 10;   // 2 for rotator
- const int INTAKE_MOTOR_LEFT_1 = 11;
- const int INTAKE_MOTOR_LEFT_2 = 12;
+ const int INTAKE_MOTOR_RIGHT = 9;    // 1 for side roller
+ const int ROTATOR_MOTOR_RIGHT = 10;   // 2 for rotator
+ const int INTAKE_MOTOR_LEFT = 11;
+ const int ROTATOR_MOTOR_LEFT = 12;
 
  // Puncher definition
  // Assume this is correct for now
@@ -67,11 +67,12 @@
    {LIFT_MOTOR_RIGHT, LIFT_MOTOR_LEFT},
    liftkP, liftkI, liftkD
  );
+
  auto intakeController = AsyncControllerFactory::velIntegrated(
-   {INTAKE_MOTOR_RIGHT_1,
-   INTAKE_MOTOR_RIGHT_2,
-   INTAKE_MOTOR_LEFT_1,
-   INTAKE_MOTOR_LEFT_2}
+   {INTAKE_MOTOR_RIGHT,INTAKE_MOTOR_LEFT}
+ );
+ auto rotatorController = AsyncControllerFactory::posPID(
+	{ROTATOR_MOTOR_RIGHT,ROTATOR_MOTOR_LEFT}
  );
  auto puncherController = AsyncControllerFactory::posIntegrated(
    {PUNCHER_MOTOR_1, PUNCHER_MOTOR_2}
@@ -82,7 +83,7 @@
 //TO DO: Find actual low and high goal values
 //NOTE: These values aren't in m, cm, inches, etc.)
 const int STARTING_HEIGHT = 0;
-const int LOW_GOAL_HEIGHT = 53;   //low goal is 69% of high goal more or less
+const int LOW_GOAL_HEIGHT = 53;   //low goal is 69% of high goal more or less but this is in degrees so idk
 const int HIGH_GOAL_HEIGHT = 75;
 
 //Better button names
@@ -110,7 +111,10 @@ void opcontrol() {
 	 	 //Arcade drive FW-BW on Left Y axis turns on Right X
 		 drive.arcade(controller.getAnalog(E_CONTROLLER_ANALOG_LEFT_Y), controller.getAnalog(E_CONTROLLER_ANALOG_RIGHT_X));
 		 ////////////////////////////////INTAKE/////////////////////////////////////
+		 if (RightBumperUP.changedToPressed())
+		 {
 
+		 }
 
 
 		 /////////////////////////////////LIFT//////////////////////////////////////
