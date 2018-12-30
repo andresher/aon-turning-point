@@ -25,7 +25,7 @@ const int DRIVE_MOTOR_RIGHT_1 = 4;
 const int DRIVE_MOTOR_RIGHT_2 = 5;
 const int DRIVE_MOTOR_RIGHT_3 = 6;
 const auto WHEEL_DIAMETER = 4_in;
-const auto CHASSIS_WIDTH = 15.23_in;
+const auto CHASSIS_WIDTH = 15.24_in;
 
 // Lift definition
 // Assume this is correct for now
