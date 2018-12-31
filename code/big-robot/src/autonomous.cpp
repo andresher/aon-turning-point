@@ -78,11 +78,11 @@ void autonomous() {
   Motor puncher1(PUNCHER_MOTOR_1);         //motor on PUNCHER_MOTOR_1 port
   Motor puncher2(PUNCHER_MOTOR_2, true);   //motor on PUNCHER_MOTOR_2 port
 
-  // Move 1 meter to the first goal
-  chassis.moveDistance(1_m);
-  // Turn 90 degrees to face second goal
-  chassis.turnAngle(90_deg);
-  // Drive 1 and a half feet toward second goal
-  chassis.moveDistance(1.5_ft);
+
+  rotatorController.setTarget(180_deg);  //flip intake
+  conveyorController.setTarget(200_rpm); //move conveyor full speed
+  liftController.setTarget(50_deg);     //raise lift //TO DO: measure distance per degree
+  driveController.moveDistance(1_m);    // Move 1 meter to the first goal
+  driveController.turnAngle(90_deg);   // Turn 90 degrees
 
 }
