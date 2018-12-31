@@ -31,6 +31,9 @@
  // Intake definition
  // Assume this is correct for now
  // TODO: Update with the real robot values
+ const double flipkP = 1.0;
+ const double flipkI = 0.001;
+ const double flipkD = 0.1;
  const int INTAKE_MOTOR_RIGHT = 9;    // 1 for side roller
  const int ROTATOR_MOTOR_RIGHT = 10;   // 2 for rotator
  const int INTAKE_MOTOR_LEFT = 11;
@@ -63,6 +66,7 @@
  );
  auto rotatorController = AsyncControllerFactory::posPID(
 	{ROTATOR_MOTOR_RIGHT,ROTATOR_MOTOR_LEFT}
+  flipkP, flipkI, flipkD
  );
  auto puncherController = AsyncControllerFactory::posIntegrated(
    {PUNCHER_MOTOR_1, PUNCHER_MOTOR_2}
@@ -76,28 +80,23 @@ const int LOW_GOAL_HEIGHT = 53;   //low goal is 69% of high goal more or less bu
 const int HIGH_GOAL_HEIGHT = 75;
 
 //Better button names
-ControllerButton RightBumperUP(E_CONTROLLER_DIGITAL_R1);
-ControllerButton RightBumperDOWN(E_CONTROLLER_DIGITAL_R2);
-ControllerButton LeftBumperUP(E_CONTROLLER_DIGITAL_L1);
-ControllerButton LeftBumperDOWN(E_CONTROLLER_DIGITAL_L2);
-ControllerButton ButtonA(E_CONTROLLER_DIGITAL_A);
-ControllerButton ButtonB(E_CONTROLLER_DIGITAL_B);
-ControllerButton ButtonX(E_CONTROLLER_DIGITAL_X);
-ControllerButton ButtonY(E_CONTROLLER_DIGITAL_Y);
-ControllerButton ButtonDOWN(E_CONTROLLER_DIGITAL_DOWN);
-ControllerButton ButtonLEFT(E_CONTROLLER_DIGITAL_LEFT);
-ControllerButton ButtonRIGHT(E_CONTROLLER_DIGITAL_RIGHT);
+ControllerButton RightBumperUP(ControllerDigital::R1);
+ControllerButton RightBumperDOWN(ControllerDigital::R2);
+ControllerButton LeftBumperUP(ControllerDigital::L1);
+ControllerButton LeftBumperDOWN(ControllerDigital::L2);
+ControllerButton ButtonA(ControllerDigital::A);
+ControllerButton ButtonB(ControllerDigital::B);
+ControllerButton ButtonX(ControllerDigital::X);
+ControllerButton ButtonY(ControllerDigital::Y);
+ControllerButton ButtonDOWN(ControllerDigital::DOWN);
+ControllerButton ButtonLEFT(ControllerDigital::LEFT);
+ControllerButton ButtonRIGHT(ControllerDigital::RIGHT);
 
 ////////////////////////////////////OPCONTROL///////////////////////////////////////////////////
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
   Controller controller;
-	//Can I just use Controller.getAnalog() instead of having to     >      v
-	//use Controller controller to do controller.getAnalog()?       >    see drive.arcade() line
-	//Or do I just use master.getAnalog()??                        >       ^
-
   //use _mtr syntax if the following doesnt work
-  //example: Motor intaker = INTAKE_MOTOR_LEFT_rmtr
+  //example: Motor intaker = INTAKE_MOTOR_LEFT_rmtr     <- reversed motor on INTAKE_MOTOR_LEFT port
   Motor intakeL(INTAKE_MOTOR_LEFT);        //motor on INTAKE_MOTOR_LEFT port
   Motor intakeR(INTAKE_MOTOR_RIGHT, true); //motor on INTAKE_MOTOR_RIGHT port reversed driection
   Motor conveyor(CONVEYOR_MOTOR);          //motor on CONVEYOR_MOTOR port
@@ -106,11 +105,12 @@ void opcontrol() {
   int CURRENT_HEIGHT = 0;                  //For Lift
   bool state = LOW;                        //For Pneumatics //Change to false if this doesn't not work
   pros::ADIDigitalOut piston (DRIVE_PNEUMATIC); //piston on DRIVE_PNEUMATIC port
+
   while (true)
 	{
 		 //////////////////////////////CHASSIS(DRIVE)///////////////////////////////
 	 	 //Arcade drive FW-BW on Left Y axis turns on Right X
-		 drive.arcade(controller.getAnalog(E_CONTROLLER_ANALOG_LEFT_Y), controller.getAnalog(E_CONTROLLER_ANALOG_RIGHT_X));
+		 drive.arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightX));
      //////////////////////////////TRANSMISSION/////////////////////////////////
      if (ButtonRIGHT.changedToPressed())
      {
