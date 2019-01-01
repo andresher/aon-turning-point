@@ -31,6 +31,9 @@
  // Intake definition
  // Assume this is correct for now
  // TODO: Update with the real robot values
+ const double flipkP = 1.0;
+ const double flipkI = 0.001;
+ const double flipkD = 0.1;
  const int INTAKE_MOTOR_RIGHT = 9;    // 1 for side roller
  const int ROTATOR_MOTOR_RIGHT = 10;   // 2 for rotator
  const int INTAKE_MOTOR_LEFT = 11;
@@ -63,26 +66,36 @@
  );
  auto rotatorController = AsyncControllerFactory::posPID(
 	{ROTATOR_MOTOR_RIGHT,ROTATOR_MOTOR_LEFT}
+  flipkP, flipkI, flipkD
  );
  auto puncherController = AsyncControllerFactory::posIntegrated(
    {PUNCHER_MOTOR_1, PUNCHER_MOTOR_2}
  );
  auto conveyorController = AsyncControllerFactory::velIntegrated(CONVEYOR_MOTOR);
 
+
 // Write autonomous code here
+//TODO: measure degrees needed for 1 "punch" of puncher, probably 300-360 or so
 void autonomous() {
+  //
+  // Motor intakeL(INTAKE_MOTOR_LEFT);        //motor on INTAKE_MOTOR_LEFT port
+  // Motor intakeR(INTAKE_MOTOR_RIGHT, true); //motor on INTAKE_MOTOR_RIGHT port reversed driection
+  // Motor conveyor(CONVEYOR_MOTOR);          //motor on CONVEYOR_MOTOR port
+  // Motor puncher1(PUNCHER_MOTOR_1);         //motor on PUNCHER_MOTOR_1 port
+  // Motor puncher2(PUNCHER_MOTOR_2, true);   //motor on PUNCHER_MOTOR_2 port
+  //
+  // IntakeR.move_voltage(-127);
+  //
+  // state != state;
+  // sensor.set_value(state);
+  //
+  // rotatorController.setTarget(180_deg);  //flip intake
+  // conveyorController.setTarget(200_rpm); //move conveyor full speed
+  // liftController.setTarget(50_deg);     //raise lift //TODO: measure distance per degree
+  // driveController.moveDistance(1_m);    // Move 1 meter to the first goal
+  // driveController.turnAngle(90_deg);   // Turn 90 degrees
+  //pros::delay(1000) or pros::Task::delay(1000) idk which one
 
-  Motor intakeL(INTAKE_MOTOR_LEFT);        //motor on INTAKE_MOTOR_LEFT port
-  Motor intakeR(INTAKE_MOTOR_RIGHT, true); //motor on INTAKE_MOTOR_RIGHT port reversed driection
-  Motor conveyor(CONVEYOR_MOTOR);          //motor on CONVEYOR_MOTOR port
-  Motor puncher1(PUNCHER_MOTOR_1);         //motor on PUNCHER_MOTOR_1 port
-  Motor puncher2(PUNCHER_MOTOR_2, true);   //motor on PUNCHER_MOTOR_2 port
-
-
-  rotatorController.setTarget(180_deg);  //flip intake
-  conveyorController.setTarget(200_rpm); //move conveyor full speed
-  liftController.setTarget(50_deg);     //raise lift //TO DO: measure distance per degree
-  driveController.moveDistance(1_m);    // Move 1 meter to the first goal
-  driveController.turnAngle(90_deg);   // Turn 90 degrees
+  
 
 }
