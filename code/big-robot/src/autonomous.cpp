@@ -1,6 +1,7 @@
 #include "main.h"
 #include "okapi/api.hpp"
 #include "definitions.hpp"
+#include "auton_functions.hpp"
 
  using namespace okapi;
 
@@ -27,10 +28,6 @@
 //TODO: Chekc if lift maintains its height when raised
 //TODO: Verify if these controller values are accumulative or they reset to 0 after every use
 
-//TODO: Find actual low and high goal values in degrees (TUNING)
-const int STARTING_HEIGHT = 0;
-const int LOW_GOAL_HEIGHT = 53;   //low goal is 69% of high goal more or less but this is in degrees so idk
-const int HIGH_GOAL_HEIGHT = 75;
 ////////////////////////////////////AUTONOMOUS///////////////////////////////////////////////////
 void autonomous() {
 

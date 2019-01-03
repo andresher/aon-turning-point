@@ -10,6 +10,13 @@
  using namespace okapi;
 
 
+ //Sensor definitions
+ const int DRIVE_PNEUMATIC = 1;     //port A //change to A if this doesn't work
+ const int LINE_TRACKER_LEFT = 2;   // use "#define SENSOR_NAME_HERE portnumber" if const int doesnt work
+ const int LINE_TRACKER_RIGHT = 3;
+ const int GYRO_PORT = 4;
+ const int ULTRASONIC_OUT = 5;
+ const int ULTRASONIC_IN = 6;
 
  // Chassis definition
  // Assume this is correct for now
@@ -20,10 +27,8 @@
  const int DRIVE_MOTOR_RIGHT_1 = 4;  //1,2,3 = Front, Middle, Back
  const int DRIVE_MOTOR_RIGHT_2 = 5;
  const int DRIVE_MOTOR_RIGHT_3 = 6;
- const int DRIVE_PNEUMATIC = 1;     //port A //change to A if this doesn't work
  const auto WHEEL_DIAMETER = 4_in;
  const auto CHASSIS_WIDTH = 15.24_in;
-
 
  // Lift definition
  // Assume this is correct for now
@@ -85,12 +90,5 @@
 const int STARTING_HEIGHT = 0;
 const int LOW_GOAL_HEIGHT = 53;   //low goal is 69% of high goal more or less but this is in degrees so idk
 const int HIGH_GOAL_HEIGHT = 75;
-
-
-
-
-
-
-
 
 #endif /* end of include guard:  */
