@@ -14,7 +14,42 @@ void place_cap(int height)
     intakeController.setTarget(0_rpm);
     liftController.setTarget(-(height-10));  //Return lift to starting position
   }
+//
+// void line_allign_front()
+// {
+//
+//   while(linetrackerL.getvalue() > 900 && linetrackerR.getvalue() > 900)
+// 	{
+//     driveController.move_voltage(80)   //drive forward if line has not been reached
+//   }
+// 	if(linetrackerR.getvalue() > 900 < 900)
+// 	{
+//       //TODO: Change to PROS  sytax for mototrs
+// 		while(linetrackerL.getvalue() > 900)
+// 		{
+// 				motor[port2] = 10;  //40
+// 				motor[port4] = 10;
+// 				motor[port6] = -30;  //30
+// 				motor[port8] = -30;
+// 		}
+// 	}
+// 		else if(linetrackerL.getvalue() < 900)
+// 		{
+// 			while(linetrackerR.getvalue() > 900)
+// 			{
+// 				motor[port2] = -30;  //40
+// 				motor[port4] = -30;
+// 				motor[port6] =	10;  //30
+// 				motor[port8] =	10;
+// 			}
+// 		}
+// 	motor[port2] = 0;
+// 	motor[port4] = 0;
+// 	motor[port6] = 0;
+// 	motor[port8] = 0;
+// }
 
+}
 
 
 #endif /* end of include guard:  */

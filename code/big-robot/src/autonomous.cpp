@@ -18,10 +18,8 @@
   */
 
 // Write autonomous code here
-//TODO: verify if you can use non-async functions with async controllers, if not, fix code
-//TODO: try and place all the motor definitions and stuff in
+//TODO: verify if you can use non-async functions with async controllers, if not, fix code or add non-async controllers?
 //TODO: measure degrees needed for 1 "punch" of puncher, probably 300-360 or so
-//TODO: line tracker code task running continuously
 //TODO: Vision Sensor code
 //TODO: Find out how to reverse motors I doubt the controllers can do this automatically for non-chassis controllers
 //TODO: Verify clockwise and counter-clockwise syntax for okapi motor controllers

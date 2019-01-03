@@ -23,14 +23,13 @@ void opcontrol() {
   Controller controller;
   //use _mtr syntax if the following doesnt work
   //example: Motor intaker = INTAKE_MOTOR_LEFT_rmtr     <- reversed motor on INTAKE_MOTOR_LEFT port
-  Motor intakeL(INTAKE_MOTOR_LEFT);        //motor on INTAKE_MOTOR_LEFT port
-  Motor intakeR(INTAKE_MOTOR_RIGHT, true); //motor on INTAKE_MOTOR_RIGHT port reversed driection
-  Motor conveyor(CONVEYOR_MOTOR);          //motor on CONVEYOR_MOTOR port
-  Motor puncher1(PUNCHER_MOTOR_1);         //motor on PUNCHER_MOTOR_1 port
-  Motor puncher2(PUNCHER_MOTOR_2, true);   //motor on PUNCHER_MOTOR_2 port
+  Motor intakeL(abs(INTAKE_MOTOR_LEFT));        //motor on INTAKE_MOTOR_LEFT port
+  Motor intakeR(abs(INTAKE_MOTOR_RIGHT), true); //motor on INTAKE_MOTOR_RIGHT port reversed driection
+  Motor conveyor(abs(CONVEYOR_MOTOR));          //motor on CONVEYOR_MOTOR port
+  Motor puncherR(abs(PUNCHER_MOTOR_RIGHT));         //motor on PUNCHER_MOTOR_1 port
+  Motor puncherL(abs(PUNCHER_MOTOR_LEFT), true);   //motor on PUNCHER_MOTOR_2 port
   int CURRENT_HEIGHT = 0;                  //For Lift
   bool state = LOW;                        //For Pneumatics //Change to false if this doesn't not work
-  pros::ADIDigitalOut piston (DRIVE_PNEUMATIC); //piston on DRIVE_PNEUMATIC port
 
   while (true)
 	{
@@ -84,13 +83,13 @@ void opcontrol() {
      ////////////////////////////////PUNCHER////////////////////////////////////
      if (ButtonLEFT.isPressed())             //Hold Button to fire puncher
      {
-         puncher1.move_voltage(127);
-         puncher2.move_voltage(127);
+         puncherR.move_voltage(127);
+         puncherL.move_voltage(127);
      }
      else
      {
-         puncher1.move_voltage(0);
-         puncher2.move_voltage(0);
+         puncherR.move_voltage(0);
+         puncherL.move_voltage(0);
      }
 		 /////////////////////////////////LIFT//////////////////////////////////////
      //Assuming controller values reset to 0 after every use
