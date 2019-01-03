@@ -1,7 +1,7 @@
 //Definitions of all constants used in project
 
-#ifndef definitions.hpp
-#define definitions.hpp
+#ifndef definitions_hpp
+#define definitions_hpp
 //#pragma once //TODO: test this to see if it works without having to use ifndef etc.
 
 #include "main.h"
